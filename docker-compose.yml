@@ -1,0 +1,36 @@
+services:
+  application:
+    image: template-spring-boot-application
+    
+    container_name: template-spring-boot-application
+    
+    restart: unless-stopped
+    
+    stdin_open: true
+    
+    tty: true
+    
+    build:
+      dockerfile: Dockerfile.local
+      context: ./docker
+    
+    ports:
+      - "${TEMPLATE_SPRING_BOOT_EXPOSED_PORT:-4040}:8080"
+    
+    working_dir: /opt/app
+    
+    volumes:
+      - ./:/opt/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.m2:/root/.m2
+    
+    command: bash -c "chmod +x ./docker/scripts/run_local.sh && ./docker/scripts/run_local.sh"
+    
+    networks:
+      - template-spring-boot-network
+
+
+networks:
+  template-spring-boot-network:
+    driver: bridge
+    name: template-spring-boot-network
