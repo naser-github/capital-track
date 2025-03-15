@@ -1,36 +1,56 @@
 services:
-  application:
-    image: template-spring-boot-application
-    
-    container_name: template-spring-boot-application
-    
+
+    #   Database Server
+  capital-track-db:
+    image: mysql:8.0.0
+    container_name: capital-track-db
     restart: unless-stopped
-    
+    ports:
+      - "2203:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-capital_track_db} 
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-capital_track_root} 
+      MYSQL_USER: ${DB_USERNAME:-capital_track_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-capital_track_pass}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - capital-track-data:/var/lib/mysql
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+      - "--tls-version=TLSv1.2,TLSv1.3"
+    networks:
+      - capital-track-network
+  
+
+  # application
+  capital-track:
+    image: capital-track
+    container_name: capital-track
+    restart: unless-stopped
     stdin_open: true
-    
     tty: true
-    
     build:
       dockerfile: Dockerfile.local
       context: ./docker
-    
     ports:
       - "${TEMPLATE_SPRING_BOOT_EXPOSED_PORT:-4040}:8080"
-    
     working_dir: /opt/app
-    
     volumes:
       - ./:/opt/app
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.m2:/root/.m2
-    
     command: bash -c "chmod +x ./docker/scripts/run_local.sh && ./docker/scripts/run_local.sh"
-    
     networks:
-      - template-spring-boot-network
+      - capital-track-network
+    depends_on:
+      - capital-track-db
 
+volumes:
+  capital-track-data:
 
 networks:
-  template-spring-boot-network:
+  capital-track-network:
     driver: bridge
-    name: template-spring-boot-network
+    name: capital-track-network

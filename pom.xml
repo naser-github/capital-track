@@ -11,10 +11,10 @@
 	</parent>
 	
 	<groupId>com</groupId>
-	<artifactId>template</artifactId>
+	<artifactId>capitaltrack</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>template</name>
-	<description>Template for Spring Boot</description>
+	<name>capitaltrack</name>
+	<description>Application that tracks yous capital</description>
 	<url/>
 	
 	<licenses>

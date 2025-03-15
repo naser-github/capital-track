@@ -1,10 +1,10 @@
-package com.template;
+package com.capitaltrack;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TemplateApplicationTests {
+class CapitalTrackApplicationTests {
 
 	@Test
 	void contextLoads() {
