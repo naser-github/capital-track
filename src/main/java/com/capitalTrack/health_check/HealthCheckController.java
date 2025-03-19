@@ -1,4 +1,4 @@
-package com.capitaltrack.health_check;
+package com.capitalTrack.health_check;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

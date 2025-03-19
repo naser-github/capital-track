@@ -1,4 +1,4 @@
-package com.capitaltrack.health_check;
+package com.capitalTrack.health_check;
 
 public interface HealthCheck {
 
